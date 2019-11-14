@@ -110,24 +110,27 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
-        describe('Feed Selection', function () {
+        //from https://github.com/aviaryan/ud-feed-reader-testing/blob/master/jasmine/spec/feedreader.js
 
-            let feedBefore = '',
-                feedAfter = '';
+      describe('New Feed Selection', function () {
+          let oldFeed;
 
-            beforeEach(function (done) {
+          /* TODO: Write a test that ensures when a new feed is loaded
+           * by the loadFeed function that the content actually changes.
+           * Remember, loadFeed() is asynchronous.
+           */
+          beforeEach(function (done) {
                 loadFeed(0, function () {
-                    feedBefore = $('.feed').html();
-                });
-                loadFeed(1, function () {
-                    feedAfter = $('.feed').html();
-                    done();
-                });
-            });
+                  // store old feed
+                  oldFeed = $('.feed').html();
+                  // fetch newer feed
+                  loadFeed(1, done);
+              });
+          });
 
-            it('.feed content changed', function () {
-            expect(feedBefore).not.toEqual(feedAfter);
-            });
+          it('is different from old', function () {
+              expect($('.feed').html()).not.toBe(oldFeed);
+          });
+      });
 
-            });
-}());
+      }());
